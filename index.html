@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eksplor Kuliner Sabang, Banda Aceh & Bireuen - Kelompok 7</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background-color: #f4f6f9;
+            color: #333;
+        }
+        header {
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            color: white;
+            padding: 45px 20px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 8px;
+        }
+        header .tagline {
+            font-size: 1.05rem;
+            margin-bottom: 25px;
+            color: #e0e6ed;
+            font-weight: 300;
+        }
+        /* Grid Foto & Nama Tim di Header */
+        .header-team-grid {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin: 20px auto;
+            max-width: 900px;
+        }
+        .header-team-card {
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+            width: 190px;
+        }
+        .header-team-card img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #fff;
+            margin-bottom: 10px;
+            background-color: #ddd;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        .header-team-card h4 {
+            font-size: 1rem;
+            color: #fff;
+            margin-bottom: 4px;
+        }
+        .header-team-card p {
+            font-size: 0.8rem;
+            color: #e0e0e0;
+        }
+        header .academic-info {
+            font-size: 0.85rem;
+            color: #b0c4de;
+            margin-top: 20px;
+            letter-spacing: 0.5px;
+        }
+        /* Tombol Keranjang Melayang */
+        .cart-float {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #ff9800;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 30px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            z-index: 999;
+            font-size: 1rem;
+        }
+        .cart-float:hover {
+            background: #e68900;
+        }
+        .container {
+            max-width: 1100px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+        .section-title {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #1e3c72;
+            font-size: 1.6rem;
+        }
+        .food-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px;
+            margin-bottom: 50px;
+        }
+        .food-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+            position: relative;
+            transition: transform 0.2s;
+        }
+        .food-card:hover {
+            transform: translateY(-5px);
+        }
+        .food-badge {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: rgba(0, 0, 0, 0.75);
+            color: white;
+            padding: 4px 10px;
+            font-size: 0.75rem;
+            border-radius: 4px;
+            font-weight: bold;
+            z-index: 2;
+        }
+        .food-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        .food-info {
+            padding: 15px;
+        }
+        .food-location {
+            font-size: 0.8rem;
+            color: #d32f2f;
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+        .food-title {
+            font-size: 1.15rem;
+            color: #1e3c72;
+            margin-bottom: 6px;
+        }
+        .food-desc {
+            font-size: 0.85rem;
+            color: #666;
+            margin-bottom: 12px;
+            min-height: 40px;
+        }
+        .price-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid #eee;
+            padding-top: 10px;
+            margin-top: 10px;
+        }
+        .price {
+            font-weight: bold;
+            color: #2e7d32;
+            font-size: 1.1rem;
+        }
+        .order-btn {
+            background: #ff5722;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .order-btn:hover {
+            background: #e64a19;
+        }
+        /* Lokasi Section */
+        .location-box {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+            margin-bottom: 50px;
+        }
+        .branch-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        .branch-card {
+            background: #f8f9fa;
+            border: 2px solid #e0e6ed;
+            border-radius: 8px;
+            padding: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: left;
+        }
+        .branch-card:hover, .branch-card.active {
+            border-color: #1e3c72;
+            background: #eef3fb;
+        }
+        .branch-card h4 {
+            color: #1e3c72;
+            margin-bottom: 4px;
+            font-size: 0.95rem;
+        }
+        .branch-card p {
+            font-size: 0.8rem;
+            color: #555;
+            line-height: 1.3;
+        }
+        .wa-banner {
+            text-align: center;
+            background: #e8f5e9;
+            color: #2e7d32;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-weight: bold;
+            font-size: 0.95rem;
+        }
+        .wa-banner a {
+            color: #1b5e20;
+            text-decoration: underline;
+        }
+        .map-frame {
+            width: 100%;
+            height: 350px;
+            border: 0;
+            border-radius: 8px;
+        }
+
+        /* Styling Modal / Pop-up Keranjang */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.6); z-index: 9999;
+            display: none; justify-content: center; align-items: center; padding: 15px;
+        }
+        .modal-box {
+            background: #ffffff; width: 100%; max-width: 480px; border-radius: 14px;
+            padding: 22px; box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            max-height: 90vh; overflow-y: auto; text-align: left;
+        }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+        .modal-header h3 { margin: 0; color: #1e3c72; font-size: 18px; }
+        .btn-close { background: none; border: none; font-size: 24px; cursor: pointer; color: #888; }
+        .cart-list { max-height: 180px; overflow-y: auto; margin-bottom: 10px; }
+        .cart-item-row {
+            display: flex; align-items: center; gap: 10px;
+            padding: 8px 0; border-bottom: 1px dashed #e2e8f0; font-size: 13px;
+        }
+        .cart-item-img {
+            width: 45px; height: 45px; object-fit: cover; border-radius: 6px; background: #eee; flex-shrink: 0;
+        }
+        .btn-hapus { background: #ef4444; color: white; border: none; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 11px; }
+        .cart-total { text-align: right; font-weight: bold; font-size: 16px; color: #ea580c; margin-top: 8px; }
+        .form-group { margin-bottom: 12px; }
+        .form-group label { display: block; font-size: 13px; font-weight: bold; margin-bottom: 4px; color: #334155; }
+        .form-group input, .form-group select {
+            width: 100%; padding: 9px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 14px; box-sizing: border-box;
+        }
+        .form-row { display: flex; gap: 10px; }
+        .form-row .form-group { flex: 1; }
+        .modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 15px; }
+        .btn-secondary { background: #94a3b8; color: white; border: none; padding: 10px 16px; border-radius: 8px; cursor: pointer; font-weight: bold; }
+        .btn-primary { background: #ea580c; color: white; border: none; padding: 10px 18px; border-radius: 8px; cursor: pointer; font-weight: bold; }
+        .btn-wa { background: #22c55e; color: white; border: none; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%; font-size: 14px; }
+        .success-icon {
+            width: 50px; height: 50px; background: #22c55e; color: white; font-size: 28px;
+            line-height: 50px; border-radius: 50%; margin: 0 auto 10px; font-weight: bold; text-align: center;
+        }
+        .receipt-box {
+            background: #f8fafc; border: 1px dashed #94a3b8; padding: 14px;
+            border-radius: 8px; font-size: 13px; line-height: 1.6; color: #1e293b;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            background: #222;
+            color: white;
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Tombol Keranjang Melayang -->
+    <button class="cart-float" onclick="openCart()">🛒 Keranjang (<span id="cart-count">0</span>)</button>
+
+    <header>
+        <h1>Eksplor Kuliner Sabang, Banda Aceh & Bireuen</h1>
+        <p class="tagline">Menjelajahi cita rasa autentik pilihan terbaik dari Sabang, Banda Aceh, dan Bireuen.</p>
+        
+        <!-- Foto & Nama Anggota Kelompok di Header Atas -->
+        <div class="header-team-grid">
+            <div class="header-team-card">
+                <img src="alia.jpeg" alt="Alia Rahmi">
+                <h4>Alia Rahmi</h4>
+                <p>250155201045</p>
+            </div>
+            <div class="header-team-card">
+                <img src="raudhatul.jpeg" alt="Raudhatul Aulia">
+                <h4>Raudhatul Aulia</h4>
+                <p>250155201023</p>
+            </div>
+            <div class="header-team-card">
+                <img src="dara.jpeg" alt="Dara Maulina">
+                <h4>Dara Maulina</h4>
+                <p>250155201040</p>
+            </div>
+            <div class="header-team-card">
+                <img src="zikra.jpeg" alt="Zikra Hayati">
+                <h4>Zikra Hayati</h4>
+                <p>250155201002</p>
+            </div>
+        </div>
+
+        <p class="academic-info">Kelompok 7 • Tugas Pemrograman Web • Dosen Pengampu: Bapak Juanda, M.M.</p>
+    </header>
+
+    <div class="container">
+        <!-- Daftar Menu Makanan -->
+        <h2 class="section-title">Daftar Menu Favorit</h2>
+
+        <div class="food-grid">
+            <!-- 1. Chicken Katsu -->
+            <div class="food-card">
+                <span class="food-badge">Makanan</span>
+                <img src="chicken-katsu.jpeg" alt="Chicken Katsu">
+                <div class="food-info">
+                    <div class="food-location">📍 Havana Garden, Bireuen</div>
+                    <h3 class="food-title">Chicken Katsu</h3>
+                    <p class="food-desc">Olahan ayam renyah disajikan dengan saus khas dan pelengkap segar.</p>
+                    <div class="price-row">
+                        <span class="price">Rp 30.000</span>
+                        <button class="order-btn" onclick="addToCart('Chicken Katsu', 'Havana Garden, Bireuen', 30000, 'chicken-katsu.jpeg')">+ Pesan</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. Seafood Tumpah -->
+            <div class="food-card">
+                <span class="food-badge">Makanan / Seafood</span>
+                <img src="seafood-tumpah.jpeg" alt="Seafood Tumpah">
+                <div class="food-info">
+                    <div class="food-location">📍 Banda Aceh</div>
+                    <h3 class="food-title">Seafood Tumpah Saus Padang</h3>
+                    <p class="food-desc">Aneka kerang, udang, dan jagung disiram saus padang pedas nikmat.</p>
+                    <div class="price-row">
+                        <span class="price">Rp 85.000</span>
+                        <button class="order-btn" onclick="addToCart('Seafood Tumpah Saus Padang', 'Banda Aceh', 85000, 'seafood-tumpah.jpeg')">+ Pesan</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. Pizza Beef Mozzarella -->
+            <div class="food-card">
+                <span class="food-badge">Makanan</span>
+                <img src="pizza-beef.jpeg" alt="Pizza Beef">
+                <div class="food-info">
+                    <div class="food-location">📍 Maha Corner, Banda Aceh</div>
+                    <h3 class="food-title">Pizza Beef Mozzarella</h3>
+                    <p class="food-desc">Pizza panggang dengan topping keju mozarella meleleh dan irisan daging sapi.</p>
+                    <div class="price-row">
+                        <span class="price">Rp 65.000</span>
+                        <button class="order-btn" onclick="addToCart('Pizza Beef Mozzarella', 'Maha Corner, Banda Aceh', 65000, 'pizza-beef.jpeg')">+ Pesan</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. Freddie's Favorite BBQ Pizza -->
+            <div class="food-card">
+                <span class="food-badge">Makanan</span>
+                <img src="pizza-bbq.jpeg" alt="Pizza BBQ">
+                <div class="food-info">
+                    <div class="food-location">📍 Freddie’s Favorite BBQ, Sabang</div>
+                    <h3 class="food-title">Freddie’s Favorite BBQ Pizza</h3>
+                    <p class="food-desc">Pizza dengan balutan saus barbeque gurih manis dan potongan ayam juicy khas Sabang.</p>
+                    <div class="price-row">
+                        <span class="price">Rp 60.000</span>
+                        <button class="order-btn" onclick="addToCart('Freddie’s Favorite BBQ Pizza', 'Sabang', 60000, 'pizza-bbq.jpeg')">+ Pesan</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 5. Whole Chicken Combo -->
+            <div class="food-card">
+                <span class="food-badge">Makanan / Fast Food</span>
+                <img src="flying-chicken.jpeg" alt="Whole Chicken Combo">
+                <div class="food-info">
+                    <div class="food-location">📍 Richeese Factory, Bireuen</div>
+                    <h3 class="food-title">Whole Chicken Combo</h3>
+                    <p class="food-desc">Ayam goreng tepung renyah berukuran besar disiram saus keju pedas spesial.</p>
+                    <div class="price-row">
+                        <span class="price">Rp 55.000</span>
+                        <button class="order-btn" onclick="addToCart('Whole Chicken Combo', 'Richeese Factory, Bireuen', 55000, 'flying-chicken.jpeg')">+ Pesan</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 6. Hawaii Seafood -->
+            <div class="food-card">
+                <span class="food-badge">Makanan / Seafood</span>
+                <img src="hawaii-seafood.jpeg" alt="Hawaii Seafood">
+                <div class="food-info">
+                    <div class="food-location">📍 Banda Aceh</div>
+                    <h3 class="food-title">Hawaii Seafood</h3>
+                    <p class="food-desc">Sajian hidangan laut segar khas Hawaii dengan bumbu pilihan yang menggugah selera.</p>
+                    <div class="price-row">
+                        <span class="price">Rp 95.000</span>
+                        <button class="order-btn" onclick="addToCart('Hawaii Seafood', 'Banda Aceh', 95000, 'hawaii-seafood.jpeg')">+ Pesan</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 7. Roti'O -->
+            <div class="food-card">
+                <span class="food-badge">Bakery / Dessert</span>
+                <img src="roti-o.jpeg" alt="Roti O">
+                <div class="food-info">
+                    <div class="food-location">📍 Roti'O, Bireuen</div>
+                    <h3 class="food-title">Roti Kopi Topping Es Krim (Roti'O)</h3>
+                    <p class="food-desc">Roti lembut beraroma kopi khas disajikan dengan es krim lembut.</p>
+                    <div class="price-row">
+                        <span class="price">Rp 22.000</span>
+                        <button class="order-btn" onclick="addToCart('Roti Kopi Topping Es Krim (Roti\'O Bireuen)', 22000, 'roti-o.jpeg')">+ Pesan</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 8. Crepe Cokelat Whipped Cream -->
+            <div class="food-card">
+                <span class="food-badge">Dessert / Cafe</span>
+                <img src="waffle-krim-kocok.jpeg" alt="Crepe Cokelat">
+                <div class="food-info">
+                    <div class="food-location">📍 Freddie’s Santai Sumur Tiga, Sabang</div>
+                    <h3 class="food-title">Crepe Cokelat Whipped Cream</h3>
+                    <p class="food-desc">Crepe manis lembut bertabur cokelat leleh dan krim kocok segar.</p>
+                    <div class="price-row">
+                        <span class="price">Rp 25.000</span>
+                        <button class="order-btn" onclick="addToCart('Crepe Cokelat Whipped Cream', 'Sabang', 25000, 'waffle-krim-kocok.jpeg')">+ Pesan</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 9. Blue Ocean & Iced Coffee Latte (Judul dirapikan 2 baris & harga paket berdua Rp 35.000) -->
+            <div class="food-card">
+                <span class="food-badge">Minuman / Coffee</span>
+                <img src="blue-mojito-dan-ice-coffe-latte.jpeg" alt="Blue Ocean & Iced Coffee Latte">
+                <div class="food-info">
+                    <div class="food-location">📍 Maha Corner, Banda Aceh</div>
+                    <h3 class="food-title">Blue Ocean & Iced Coffee Latte</h3>
+                    <p class="food-desc">Kombinasi menyegarkan Blue Mojito dan Ice Coffee Latte peneman santai di siang hari.</p>
+                    <div class="price-row">
+                        <span class="price">Rp 35.000</span>
+                        <button class="order-btn" onclick="addToCart('Blue Ocean & Iced Coffee Latte', 'Maha Corner, Banda Aceh', 35000, 'blue-mojito-dan-ice-coffe-latte.jpeg')">+ Pesan</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bagian Lokasi Outlet & Peta -->
+        <h2 class="section-title">Lokasi Outlet & Cabang Kami</h2>
+        <div class="location-box">
+            <div class="wa-banner">
+                📞 Pemesanan & Info Cabang via WhatsApp: <a href="https://wa.me/6285366499775" target="_blank">0853-6649-9775</a>
+            </div>
+
+            <div class="branch-grid">
+                <!-- Sabang -->
+                <div class="branch-card" onclick="changeMap('sabang', this)">
+                    <h4>📍 Sabang</h4>
+                    <p>Freddie's Santai Sumur Tiga & Freddie's Favorite BBQ.</p>
+                </div>
+                <!-- Banda Aceh -->
+                <div class="branch-card active" onclick="changeMap('bandaaceh', this)">
+                    <h4>📍 Banda Aceh</h4>
+                    <p>Maha Corner & Pusat Kuliner Seafood.</p>
+                </div>
+                <!-- Bireuen - Havana -->
+                <div class="branch-card" onclick="changeMap('havana', this)">
+                    <h4>📍 Bireuen (Havana)</h4>
+                    <p>Kawasan Havana Garden Bireuen.</p>
+                </div>
+                <!-- Bireuen - Suzuya / Roti'O -->
+                <div class="branch-card" onclick="changeMap('suzuya', this)">
+                    <h4>📍 Bireuen (Suzuya)</h4>
+                    <p>Suzuya Mall Bireuen (Roti'O).</p>
+                </div>
+                <!-- Bireuen - Richeese (Alamat Jalan Asli) -->
+                <div class="branch-card" onclick="changeMap('richeese', this)">
+                    <h4>📍 Richeese Bireuen</h4>
+                    <p>Jl. T. Hamzah Bendahara, MNS Capa.</p>
+                </div>
+            </div>
+
+            <!-- Google Maps Iframe -->
+            <iframe 
+                id="googleMap"
+                class="map-frame" 
+                src="https://maps.google.com/maps?q=Maha%20Corner%20Banda%20Aceh&t=&z=16&ie=UTF8&iwloc=&output=embed" 
+                allowfullscreen="" 
+                loading="lazy">
+            </iframe>
+        </div>
+    </div>
+
+    <!-- Modal / Pop-up Keranjang & Checkout Realistis -->
+    <div id="cartModal" class="modal-overlay">
+        <div class="modal-box">
+            
+            <!-- TAMPILAN 1: FORM PENGISIAN PESANAN -->
+            <div id="checkoutFormSection">
+                <div class="modal-header">
+                    <h3>🛒 Keranjang Pesanan Anda</h3>
+                    <button onclick="closeCart()" class="btn-close">&times;</button>
+                </div>
+
+                <div id="cart-items" class="cart-list"></div>
+                <div class="cart-total" id="cart-total">Total: Rp 0</div>
+
+                <hr style="margin: 15px 0; border: 0; border-top: 1px solid #ddd;">
+
+                <div class="form-group">
+                    <label>Nama Pemesan *</label>
+                    <input type="text" id="custName">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Tipe Layanan</label>
+                        <select id="orderType">
+                            <option value="Dine-in (Makan di Tempat)">Dine-in (Makan di Tempat)</option>
+                            <option value="Takeaway (Bungkus)">Takeaway (Bungkus)</option>
+                            <option value="Delivery (Pesan Antar)">Delivery (Pesan Antar)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Nomor Meja / Alamat</label>
+                        <input type="text" id="custNote">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Metode Pembayaran</label>
+                    <select id="paymentMethod">
+                        <option value="QRIS / E-Wallet">QRIS / E-Wallet</option>
+                        <option value="Transfer Bank (BSI / Bank Aceh)">Transfer Bank (BSI / Bank Aceh)</option>
+                        <option value="Tunai (Kasir / COD)">Tunai (Kasir / COD)</option>
+                    </select>
+                </div>
+
+                <div class="modal-actions">
+                    <button class="btn-secondary" onclick="closeCart()">Tutup</button>
+                    <button class="btn-primary" onclick="prosesPesanan()">Konfirmasi Pesanan</button>
+                </div>
+            </div>
+
+            <!-- TAMPILAN 2: STRUK DIGITAL -->
+            <div id="receiptSection" style="display: none; text-align: center;">
+                <div class="success-icon">✓</div>
+                <h3 style="color: #1e3c72; margin-bottom: 5px;">Pesanan Berhasil Dibuat!</h3>
+                <p style="font-size: 13px; color: #666; margin-bottom: 15px;">Terima kasih telah memesan Kuliner Sabang, Banda Aceh & Bireuen</p>
+
+                <div class="receipt-box" id="receiptContent"></div>
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Kuliner Sabang, Banda Aceh & Bireuen • Kelompok 7 | Tugas Dosen Pengampu: Bapak Juanda, M.M.</p>
+    </footer>
+
+    <script>
+        // Fitur Ganti Peta Lokasi Cabang
+        function changeMap(locationKey, element) {
+            document.querySelectorAll('.branch-card').forEach(card => card.classList.remove('active'));
+            element.classList.add('active');
+
+            const mapFrame = document.getElementById('googleMap');
+            const locations = {
+                'sabang': 'https://maps.google.com/maps?q=Freddies%20Santai%20Sumur%20Tiga%20Sabang&t=&z=16&ie=UTF8&iwloc=&output=embed',
+                'bandaaceh': 'https://maps.google.com/maps?q=Maha%20Corner%20Banda%20Aceh&t=&z=16&ie=UTF8&iwloc=&output=embed',
+                'havana': 'https://maps.google.com/maps?q=Havana%20Garden%20Bireuen&t=&z=16&ie=UTF8&iwloc=&output=embed',
+                'suzuya': 'https://maps.google.com/maps?q=Suzuya%20Mall%20Bireuen&t=&z=16&ie=UTF8&iwloc=&output=embed',
+                'richeese': 'https://maps.google.com/maps?q=Richeese%20Factory%20Bireuen&t=&z=16&ie=UTF8&iwloc=&output=embed'
+            };
+
+            mapFrame.src = locations[locationKey];
+        }
+
+        // Fitur Keranjang & Checkout (Dengan Thumbnail Gambar)
+        let cart = [];
+        let dataStrukTerakhir = {};
+
+        function addToCart(name, cabang, price, img) {
+            cart.push({ name, cabang, price, img });
+            updateCartUI();
+            alert(name + " (" + cabang + ") berhasil ditambahkan ke keranjang!");
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            document.getElementById('cart-count').innerText = cart.length;
+            const cartItemsDiv = document.getElementById('cart-items');
+            const cartTotalDiv = document.getElementById('cart-total');
+
+            if (cart.length === 0) {
+                cartItemsDiv.innerHTML = '<p style="color:#777; text-align:center;">Keranjang masih kosong.</p>';
+                cartTotalDiv.innerText = 'Total: Rp 0';
+                return;
+            }
+
+            let html = '';
+            let total = 0;
+            cart.forEach((item, index) => {
+                total += item.price;
+                html += `
+                    <div class="cart-item-row">
+                        <img src="${item.img}" class="cart-item-img" alt="${item.name}">
+                        <div style="flex: 1;">
+                            <strong>${item.name}</strong><br>
+                            <small style="color:#64748b;">📍 ${item.cabang}</small>
+                        </div>
+                        <div style="text-align:right;">
+                            <span>Rp ${item.price.toLocaleString('id-ID')}</span><br>
+                            <button class="btn-hapus" onclick="removeFromCart(${index})">Hapus</button>
+                        </div>
+                    </div>
+                `;
+            });
+
+            cartItemsDiv.innerHTML = html;
+            cartTotalDiv.innerText = 'Total: Rp ' + total.toLocaleString('id-ID');
+        }
+
+        function openCart() {
+            document.getElementById('checkoutFormSection').style.display = 'block';
+            document.getElementById('receiptSection').style.display = 'none';
+            document.getElementById('custName').value = '';
+            document.getElementById('custNote').value = '';
+            updateCartUI();
+            document.getElementById('cartModal').style.display = 'flex';
+        }
+
+        function closeCart() {
+            document.getElementById('cartModal').style.display = 'none';
+        }
+
+        function prosesPesanan() {
+            if (cart.length === 0) {
+                alert("Keranjang Anda masih kosong. Silakan pilih menu terlebih dahulu!");
+                return;
+            }
+
+            const nama = document.getElementById('custName').value.trim();
+            if (!nama) {
+                alert("Silakan isi Nama Pemesan terlebih dahulu!");
+                return;
+            }
+
+            const tipe = document.getElementById('orderType').value;
+            const catatan = document.getElementById('custNote').value.trim() || '-';
+            const metode = document.getElementById('paymentMethod').value;
+            const noStruk = '#KSB-' + Math.floor(100000 + Math.random() * 900000);
+            const totalHarga = cart.reduce((sum, item) => sum + item.price, 0);
+
+            dataStrukTerakhir = {
+                noStruk, nama, tipe, catatan, metode, totalHarga,
+                items: [...cart]
+            };
+
+            let rincianMenuHTML = cart.map(i => `• ${i.name} [${i.cabang}] - Rp ${i.price.toLocaleString('id-ID')}`).join('<br>');
+
+            let aksiHTML = '';
+            if (metode.includes('Tunai')) {
+                aksiHTML = `
+                    <p style="color: #2e7d32; font-weight: bold; margin: 12px 0 8px 0; font-size: 13px;">
+                        💵 Silakan tunjukkan struk digital ini ke kasir outlet untuk pembayaran tunai.
+                    </p>
+                    <button class="btn-primary" onclick="selesaiDanReset()" style="width: 100%;">
+                        Selesai & Pesan Lagi
+                    </button>
+                `;
+            } else {
+                aksiHTML = `
+                    <div style="margin-top: 12px; display: flex; flex-direction: column; gap: 8px;">
+                        <button class="btn-wa" onclick="kirimKeWhatsApp()">
+                            📲 Kirim Struk ke WhatsApp Admin
+                        </button>
+                        <button class="btn-primary" onclick="selesaiDanReset()" style="width: 100%;">
+                            Selesai & Pesan Lagi
+                        </button>
+                    </div>
+                `;
+            }
+
+            document.getElementById('receiptContent').innerHTML = `
+                <strong>No. Struk:</strong> ${noStruk}<br>
+                <strong>Pemesan:</strong> ${nama}<br>
+                <strong>Layanan:</strong> ${tipe} (${catatan})<br>
+                <strong>Metode Bayar:</strong> ${metode}<br>
+                <hr style="margin: 8px 0; border-top: 1px dashed #cbd5e1;">
+                <strong>Rincian Pesanan:</strong><br>
+                ${rincianMenuHTML}
+                <hr style="margin: 8px 0; border-top: 1px dashed #cbd5e1;">
+                <div style="font-size: 15px; font-weight: bold; color: #ea580c; text-align: right;">
+                    Total: Rp ${totalHarga.toLocaleString('id-ID')}
+                </div>
+                ${aksiHTML}
+            `;
+
+            document.getElementById('checkoutFormSection').style.display = 'none';
+            document.getElementById('receiptSection').style.display = 'block';
+        }
+
+        function kirimKeWhatsApp() {
+            const nomorAdmin = '6285366499775'; 
+            const d = dataStrukTerakhir;
+
+            let daftarMenuWA = d.items.map((item, i) => `${i + 1}. ${item.name} [${item.cabang}] - Rp ${item.price.toLocaleString('id-ID')}`).join('%0A');
+
+            const pesanWA = `*STRUK PEMESANAN KULINER SABANG, BANDA ACEH & BIREUEN*%0A` +
+                            `------------------------------------%0A` +
+                            `*No. Struk:* ${d.noStruk}%0A` +
+                            `*Nama Pemesan:* ${d.nama}%0A` +
+                            `*Layanan:* ${d.tipe}%0A` +
+                            `*Meja/Alamat:* ${d.catatan}%0A` +
+                            `*Pembayaran:* ${d.metode}%0A` +
+                            `------------------------------------%0A` +
+                            `*Detail Pesanan:*%0A${daftarMenuWA}%0A` +
+                            `------------------------------------%0A` +
+                            `*TOTAL BAYAR: Rp ${d.totalHarga.toLocaleString('id-ID')}*%0A%0A` +
+                            `Mohon segera diproses ya Admin! Terima kasih 🙏`;
+
+            window.open(`https://wa.me/${nomorAdmin}?text=${pesanWA}`, '_blank');
+        }
+
+        function selesaiDanReset() {
+            cart = [];
+            updateCartUI();
+            closeCart();
+        }
+    </script>
+</body>
+</html>
